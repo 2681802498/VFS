@@ -1,0 +1,31 @@
+# Build directories
+build/
+build2/
+build3/
+out/
+
+# IDE
+.vs/
+.vscode/
+*.user
+*.suo
+*.sln
+*.vcxproj
+*.vcxproj.filters
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+
+# Object files
+*.obj
+*.o
+*.exe
+*.pdb
+*.ilk
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temp files
+/tmp/

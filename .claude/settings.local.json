@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c ' *)",
+      "Bash(python -c ' *)",
+      "Bash(where node *)",
+      "Bash(where go *)",
+      "Bash(where ruby *)",
+      "Bash(where findstr *)",
+      "Bash(findstr /?)",
+      "Bash(node -e ' *)",
+      "Read(//usr/**)",
+      "Read(//c/Windows/System32/**)",
+      "Bash(mkdir -p /tmp/pptx_extract)",
+      "Read(//tmp/**)",
+      "Bash(unzip -o \"E:/profiles/大三下/2026-操作系统课程设计/OS-课设-2026.pptx\" \"ppt/slides/*.xml\")",
+      "Bash(cmake -B build -G \"Visual Studio 18 2026\" -A x64)",
+      "Bash(rm -rf \"E:/Codes/C++/Os/build\")",
+      "Bash(mkdir -p \"E:/Codes/C++/Os/build\")",
+      "Bash(cmake .. -G \"Visual Studio 18 2026\")",
+      "Bash(cmake --build . --config Debug)",
+      "Bash(rm -rf \"E:/Codes/C++/Os/build2\")",
+      "Bash(mkdir -p \"E:/Codes/C++/Os/build2\")",
+      "Bash(taskkill /F /IM MSBuild.exe)",
+      "Bash(taskkill /F /IM cl.exe)",
+      "Bash(mkdir -p \"E:/Codes/C++/Os/build3\")",
+      "Bash(cmake --build . --config Debug --target vfs)",
+      "Bash(echo '#include \"filesys.h\" *)",
+      "Bash(cl /EHsc /I\"../include\" \"/tmp/test_vfs.cpp\")",
+      "Bash(powershell -Command \"& 'C:\\\\Program Files\\\\Microsoft Visual Studio\\\\18\\\\Community\\\\Common7\\\\Tools\\\\Launch-VsDevShell.ps1' -SkipAutomaticLocation; cl /EHsc /I'E:\\\\Codes\\\\C++\\\\Os\\\\include' '/tmp/test_vfs.cpp' 2>&1\")",
+      "Bash(xxd \"E:/Codes/C++/Os/include/filesys.h\")",
+      "Bash(xxd \"E:/Codes/C++/Os/user/main.cpp\")",
+      "Bash(printf '#include \"filesys.h\"\\\\nint main\\(\\) { return 0; }\\\\n')",
+      "Bash(cmake --build . --config Debug -- -nologo)",
+      "Bash(gh auth *)",
+      "Bash(git add *)"
+    ]
+  }
+}
