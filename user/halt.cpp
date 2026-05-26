@@ -9,10 +9,28 @@
 
 void halt()
 {
-    // TODO: chdir("..") writeback current dir
-    // TODO: iput(g_cur_path_inode)
-    // TODO: for each logged-in user: logout(g_user[i].u_uid)
-    // TODO: writeback g_filsys to disk at BLOCKSIZ offset
-    // TODO: fclose(g_fd)
-    // TODO: printf("Good Bye...\n"), exit(0)
+    //writeback current dir
+    chdir("..");
+    iput(g_cur_path_inode);
+    for(int i = 0 ; i < USERNUM ;i++){
+        logout(g_user[i].u_uid);
+    }
+    // writeback g_filsys (superblock) to disk at BLOCKSIZ offset
+    if (g_fd) {
+        if (fseek(g_fd, BLOCKSIZ, SEEK_SET) == 0) {
+            if (fwrite(&g_filsys, sizeof(g_filsys), 1, g_fd) != 1) {
+                perror("write superblock");
+            } else {
+                fflush(g_fd);
+            }
+        } else {
+            perror("fseek");
+        }
+
+        fclose(g_fd);
+        g_fd = nullptr;
+    }
+
+    printf("Good Bye...\n");
+    exit(0);
 }

@@ -4,10 +4,15 @@
  */
 #include "filesys.h"
 
-void ifree(unsigned int dinodeid)
-{
-    // TODO: g_filsys.s_ninode++
-    // TODO: if s_pinode != NICINOD: s_inode[s_pinode] = dinodeid, s_pinode++
-    // TODO: else if dinodeid < s_rinode: update s_rinode
-    // TODO: g_filsys.s_fmod = SUPDATE
+void ifree(unsigned int dinodeid) {
+  if(g_filsys.s_ninode < NICINOD) {
+    g_filsys.s_ninode++;
+    g_filsys.s_pinode++;
+    g_filsys.s_inode[g_filsys.s_pinode] = dinodeid;
+  }
+  if(dinodeid < g_filsys.s_rinode) {
+    g_filsys.s_rinode = dinodeid;
+  }
+
+  g_filsys.s_fmod = SUPDATE;
 }

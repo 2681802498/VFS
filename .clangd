@@ -1,0 +1,5 @@
+CompileFlags:
+  Add:
+    - "-IE:/Codes/C++/Os/include"
+    - "-std=c++17"
+  CompilationDatabase: E:/Codes/C++/Os/build

@@ -4,6 +4,7 @@
  * Layer 7 (Member D)
  */
 #include "filesys.h"
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <string>
@@ -55,29 +56,33 @@ void shell_loop()
         if (cmd == "help") {
             show_help();
         } else if (cmd == "login" && args.size() >= 3) {
-            // TODO: login(std::stoul(args[1]), args[2].c_str())
+            login(std::stoul(args[1]),args[2].c_str());
         } else if (cmd == "logout") {
-            // TODO: logout(g_user[g_user_id].u_uid)
+            logout(g_user[g_user_id].u_uid);
         } else if (cmd == "dir" || cmd == "ls") {
-            // TODO: _dir()
+            _dir();
         } else if (cmd == "mkdir" && args.size() >= 2) {
-            // TODO: mkdir(args[1].c_str())
+            mkdir(args[1].c_str());
         } else if (cmd == "cd" && args.size() >= 2) {
-            // TODO: chdir(args[1].c_str())
+            chdir(args[1].c_str());
         } else if (cmd == "creat" && args.size() >= 3) {
-            // TODO: creat(g_user_id, args[1].c_str(), std::stoul(args[2]))
+            creat(g_user_id, args[1].c_str(), std::stoul(args[2]));
         } else if (cmd == "open" && args.size() >= 3) {
-            // TODO: aopen(g_user_id, args[1].c_str(), std::stoul(args[2]))
+            aopen(g_user_id, args[1].c_str(), std::stoul(args[2]));
         } else if (cmd == "read" && args.size() >= 3) {
-            // TODO: vfs_read(std::stoul(args[1]), buf, std::stoul(args[2]))
+            char buf[BUFSIZ];
+            vfs_read(std::stoul(args[1]), buf, std::stoul(args[2]));
+            for(int i = 0; i < strlen(buf);i++){
+                std::cout << buf[i];
+            }
         } else if (cmd == "write" && args.size() >= 3) {
-            // TODO: vfs_write(std::stoul(args[1]), "test data", std::stoul(args[2]))
+            vfs_write(std::stoul(args[1]), "test data", std::stoul(args[2]));
         } else if (cmd == "close" && args.size() >= 2) {
-            // TODO: close(g_user_id, std::stoul(args[1]))
+            close(g_user_id, std::stoul(args[1]));
         } else if (cmd == "delete" && args.size() >= 2) {
-            // TODO: delete_file(args[1].c_str())
+            delete_file(args[1].c_str());
         } else if (cmd == "format") {
-            // TODO: format()
+            format();
         } else if (cmd == "halt" || cmd == "exit" || cmd == "quit") {
             halt();
             break;

@@ -5,14 +5,60 @@
  */
 #include <cstdlib>
 #include <cstring>
+
 #include "filesys.h"
 
-void install()
-{
-    // TODO: g_fd = fopen("filesystem", "r+b")
-    // TODO: fseek + fread superblock from BLOCKSIZ offset into g_filsys
-    // TODO: init g_hinode[NHINO] hash headers (i_forw = nullptr)
-    // TODO: init g_sys_ofile[SYSOPENFILE] (f_count=0, f_inode=nullptr)
-    // TODO: init g_user[USERNUM] (u_uid=0, u_ofile[]=SYSOPENFILE+1)
-    // TODO: g_cur_path_inode = iget(1), load root dir into g_dir
+void install() {
+  g_fd = fopen("filesystem", "r+b");
+  if (!g_fd) {
+    printf(
+        "Error: Unable to open virtual disk file. Please run format() "
+        "first.\n");
+    exit(1);
+  }
+
+  fseek(g_fd, BLOCKSIZ, SEEK_SET);
+  fread(&g_filsys, sizeof(g_filsys), 1, g_fd);
+
+  for (int i = 0; i < NHINO; i++) {
+    g_hinode[i].i_forw = nullptr;
+  }
+
+  for (int i = 0; i < SYSOPENFILE; i++) {
+    g_sys_ofile[i].f_count = 0;
+    g_sys_ofile[i].f_inode = nullptr;
+    g_sys_ofile[i].f_flag = 0;
+    g_sys_ofile[i].f_off = 0;
+  }
+
+  for (int i = 0; i < USERNUM; i++) {
+    g_user[i].u_uid = 0;
+    g_user[i].u_gid = 0;
+    g_user[i].u_default_mode = DEFAULTMODE;
+    for (int j = 0; j < NOFILE; j++) {
+      g_user[i].u_ofile[j] = SYSOPENFILE + 1;
+    }
+  }
+
+  dinode pwd_inode;
+  fseek(g_fd, DINODESTART + 3 * DINODESIZ, SEEK_SET);
+  fread(&pwd_inode, sizeof(dinode), 1, g_fd);
+
+  char block[BLOCKSIZ];
+  memset(block, 0, BLOCKSIZ);
+  fseek(g_fd, DATASTART + pwd_inode.di_addr[0] * BLOCKSIZ, SEEK_SET);
+  fread(block, BLOCKSIZ, 1, g_fd);
+  memcpy(g_pwd, block, sizeof(pwd) * PWDNUM);
+  
+  g_cur_path_inode = iget(1);
+  if (g_cur_path_inode){
+    memset(block, 0, BLOCKSIZ);
+    fseek(g_fd, DATASTART + g_cur_path_inode->di_addr[0] * BLOCKSIZ, SEEK_SET);
+    fread(block, BLOCKSIZ, 1, g_fd);
+    memcpy(&g_dir, block, sizeof(dir));
+  }
+
+  g_user_id = -1;
+
+  printf("Install completed: virtual disk loaded and ready.\n");
 }

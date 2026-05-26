@@ -33,7 +33,20 @@
       "Bash(printf '#include \"filesys.h\"\\\\nint main\\(\\) { return 0; }\\\\n')",
       "Bash(cmake --build . --config Debug -- -nologo)",
       "Bash(gh auth *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(winget install *)",
+      "Bash(curl --version)",
+      "Bash(git config *)",
+      "Bash(git branch *)",
+      "Bash(cmake -B build -S .)",
+      "Bash(cmake --version)",
+      "Bash(cmake -B build_ninja -G \"Ninja\" -S . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON)",
+      "Bash(cmake --build build --config Debug)",
+      "Bash(where clangd *)",
+      "Bash(clangd --version)",
+      "Bash(clangd --check=\"user/shell.cpp\")",
+      "Bash(where ninja *)"
     ]
   }
 }

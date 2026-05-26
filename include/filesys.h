@@ -60,7 +60,7 @@ struct dinode {
     unsigned short di_uid;      /* owner uid */
     unsigned short di_gid;      /* owner gid */
     unsigned long  di_size;     /* file size in bytes */
-    unsigned int   di_addr[NADDR]; /* direct block pointers */
+    unsigned short di_addr[NADDR]; /* direct block pointers */
 };
 
 /* ====== Forward Declarations ====== */
