@@ -28,3 +28,6 @@ Thumbs.db
 
 # Temp files
 /tmp/
+
+# Virtual disk (runtime artifact)
+filesystem

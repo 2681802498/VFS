@@ -62,3 +62,38 @@ if(WIN32)
         WIN32_EXECUTABLE OFF
     )
 endif()
+
+# ====== Unit Tests ======
+include(FetchContent)
+FetchContent_Declare(
+  Catch2
+  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+  GIT_TAG        v3.4.0
+)
+FetchContent_MakeAvailable(Catch2)
+
+# Sources shared between main executable and tests (everything except main.cpp)
+set(VFS_LIB_SOURCES
+    ${STORAGE_SOURCES}
+    ${INODE_SOURCES}
+    ${FILEOPS_SOURCES}
+    user/log.cpp
+    user/halt.cpp
+    user/shell.cpp
+)
+
+set(TEST_SOURCES
+    test/test_globals.cpp
+    test/test_format.cpp
+    test/test_balloc_bfree.cpp
+    test/test_ifree.cpp
+    test/test_login.cpp
+)
+
+add_executable(vfs_test ${VFS_LIB_SOURCES} ${TEST_SOURCES})
+target_link_libraries(vfs_test PRIVATE Catch2::Catch2WithMain)
+
+include(CTest)
+enable_testing()
+include(Catch)
+catch_discover_tests(vfs_test)
