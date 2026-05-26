@@ -1,6 +1,7 @@
 #ifndef FILESYS_H
 #define FILESYS_H
 
+#include <cstdint>
 #include <cstdio>
 
 /* ====== Disk Layout & System Constants ====== */
@@ -55,12 +56,12 @@
 
 /* ====== Disk Inode (32 bytes) ====== */
 struct dinode {
-    unsigned short di_number;   /* link count */
-    unsigned short di_mode;     /* type + permissions */
-    unsigned short di_uid;      /* owner uid */
-    unsigned short di_gid;      /* owner gid */
-    unsigned long  di_size;     /* file size in bytes */
-    unsigned short di_addr[NADDR]; /* direct block pointers */
+    uint16_t di_number;       /* link count */
+    uint16_t di_mode;         /* type + permissions */
+    uint16_t di_uid;          /* owner uid */
+    uint16_t di_gid;          /* owner gid */
+    uint32_t di_size;         /* file size in bytes */
+    uint16_t di_addr[NADDR];  /* direct block pointers */
 };
 
 /* ====== Forward Declarations ====== */
@@ -68,35 +69,35 @@ struct inode;
 
 /* ====== Directory Entry (16 bytes) ====== */
 struct direct {
-    char         d_name[DIRSIZ]; /* file name */
-    unsigned int d_ino;          /* inode number */
+    char     d_name[DIRSIZ];  /* file name */
+    uint32_t d_ino;           /* inode number */
 };
 
 /* ====== Superblock ====== */
 struct filsys {
-    unsigned short s_isize;          /* inode area block count */
-    unsigned long  s_fsize;          /* data area block count */
-    unsigned int   s_nfree;          /* free block count in stack */
-    unsigned short s_pfree;          /* free block stack pointer */
-    unsigned int   s_free[NICFREE];  /* free block stack */
-    unsigned int   s_ninode;         /* free inode count in stack */
-    unsigned short s_pinode;         /* free inode stack pointer */
-    unsigned int   s_inode[NICINOD]; /* free inode stack */
-    unsigned int   s_rinode;         /* remembered inode */
-    char           s_fmod;           /* modified flag */
+    uint16_t s_isize;            /* inode area block count */
+    uint32_t s_fsize;            /* data area block count */
+    uint32_t s_nfree;            /* free block count in stack */
+    uint16_t s_pfree;            /* free block stack pointer */
+    uint32_t s_free[NICFREE];    /* free block stack */
+    uint32_t s_ninode;           /* free inode count in stack */
+    uint16_t s_pinode;           /* free inode stack pointer */
+    uint32_t s_inode[NICINOD];   /* free inode stack */
+    uint32_t s_rinode;           /* remembered inode */
+    char     s_fmod;             /* modified flag */
 };
 
 /* ====== Password Entry ====== */
 struct pwd {
-    unsigned short p_uid;
-    unsigned short p_gid;
-    char           password[PWDSIZ];
+    uint16_t p_uid;
+    uint16_t p_gid;
+    char     password[PWDSIZ];
 };
 
 /* ====== Current Directory ====== */
 struct dir {
     struct direct direct[DIRNUM];
-    int    size;
+    int32_t size;
 };
 
 /* ====== Inode Hash Table Header ====== */
@@ -106,33 +107,33 @@ struct hinode {
 
 /* ====== System Open File Table Entry ====== */
 struct file {
-    char          f_flag;
-    unsigned int  f_count;
-    inode        *f_inode;
-    unsigned long f_off;
+    char     f_flag;
+    uint32_t f_count;
+    inode   *f_inode;
+    uint32_t f_off;
 };
 
 /* ====== User Structure ====== */
 struct user_t {
-    unsigned short u_default_mode;
-    unsigned short u_uid;
-    unsigned short u_gid;
-    unsigned short u_ofile[NOFILE];
+    uint16_t u_default_mode;
+    uint16_t u_uid;
+    uint16_t u_gid;
+    uint16_t u_ofile[NOFILE];
 };
 
 /* ====== Memory Inode (full definition) ====== */
 struct inode {
-    inode        *i_forw;
-    inode        *i_back;
-    char          i_flag;
-    unsigned int  i_ino;
-    unsigned int  i_count;
-    unsigned short di_number;
-    unsigned short di_mode;
-    unsigned short di_uid;
-    unsigned short di_gid;
-    unsigned short di_size;
-    unsigned int   di_addr[NADDR];
+    inode    *i_forw;
+    inode    *i_back;
+    char      i_flag;
+    uint32_t  i_ino;
+    uint32_t  i_count;
+    uint16_t  di_number;
+    uint16_t  di_mode;
+    uint16_t  di_uid;
+    uint16_t  di_gid;
+    uint16_t  di_size;
+    uint32_t  di_addr[NADDR];
 };
 
 /* ====== Global Variables ====== */
@@ -144,41 +145,41 @@ extern pwd    g_pwd[PWDNUM];
 extern user_t g_user[USERNUM];
 extern FILE  *g_fd;
 extern inode *g_cur_path_inode;
-extern int    g_user_id;
+extern int32_t g_user_id;
 
 /* ====== Function Declarations ====== */
 
 /* Layer 1-2: Virtual disk + Block management (Member A) */
-void          format();
-void          install();
-unsigned int  balloc();
-void          bfree(unsigned int block_num);
-inode        *ialloc();
-void          ifree(unsigned int dinodeid);
+void     format();
+void     install();
+uint32_t balloc();
+void     bfree(uint32_t block_num);
+inode   *ialloc();
+void     ifree(uint32_t dinodeid);
 
 /* Layer 3: Inode management (Member B) */
-inode        *iget(unsigned int dinodeid);
-void          iput(inode *pinode);
+inode   *iget(uint32_t dinodeid);
+void     iput(inode *pinode);
 
 /* Layer 5: Directory operations (Member B) */
-unsigned int  namei(const char *name);
-unsigned short iname(const char *name);
-void          mkdir(const char *dirname);
-void          chdir(const char *dirname);
-void          _dir();
+uint32_t namei(const char *name);
+uint16_t iname(const char *name);
+void     mkdir(const char *dirname);
+void     chdir(const char *dirname);
+void     _dir();
 
 /* Layer 4: File operations + Access control (Member C) */
-unsigned int  access(unsigned int uid, inode *inode, unsigned short mode);
-int           creat(unsigned int uid, const char *filename, unsigned short mode);
-unsigned short aopen(unsigned int uid, const char *filename, unsigned short openmode);
-void          close(unsigned int uid, unsigned short cfd);
-void          delete_file(const char *filename);
-unsigned int  vfs_read(unsigned int fd, char *buf, unsigned int size);
-unsigned int  vfs_write(unsigned int fd, const char *buf, unsigned int size);
+uint32_t access(uint32_t uid, inode *inode, uint16_t mode);
+int32_t  creat(uint32_t uid, const char *filename, uint16_t mode);
+uint16_t aopen(uint32_t uid, const char *filename, uint16_t openmode);
+void     close(uint32_t uid, uint16_t cfd);
+void     delete_file(const char *filename);
+uint32_t vfs_read(uint32_t fd, char *buf, uint32_t size);
+uint32_t vfs_write(uint32_t fd, const char *buf, uint32_t size);
 
 /* Layer 6: User management (Member D) */
-int           login(unsigned short uid, const char *passwd);
-int           logout(unsigned short uid);
-void          halt();
+int32_t  login(uint16_t uid, const char *passwd);
+int32_t  logout(uint16_t uid);
+void     halt();
 
 #endif /* FILESYS_H */
