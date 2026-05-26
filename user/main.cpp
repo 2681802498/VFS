@@ -20,6 +20,7 @@ user_t g_user[USERNUM];
 FILE  *g_fd              = nullptr;
 inode *g_cur_path_inode   = nullptr;
 int    g_user_id          = -1;
+int    g_vfs_errno         = 0;
 
 void shell_loop();
 
@@ -64,7 +65,7 @@ int main()
     if (login(uid, passwd.c_str())) {
         std::cout << "Login successful!\n\n";
     } else {
-        std::cout << "Login failed. Exiting.\n";
+        std::cout << "Login failed: " << vfs_strerror(g_vfs_errno) << "\n";
         halt();
         return 1;
     }

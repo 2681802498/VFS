@@ -25,9 +25,11 @@ int login(unsigned short uid, const char *passwd)
                     return 1;
                 }
             }
+            g_vfs_errno = E_VFS_NFILE;
             return 0;
         }
     }
+    g_vfs_errno = E_VFS_AUTH;
     return 0;
 }
 
@@ -53,5 +55,6 @@ int logout(unsigned short uid)
             return 1;
         }
     }
+    g_vfs_errno = E_VFS_AUTH;
     return 0;
 }

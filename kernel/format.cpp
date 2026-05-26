@@ -12,7 +12,8 @@ void format() {
   printf("Formatting\n");
   g_fd = fopen("filesystem", "w+b");
   if (!g_fd) {
-    printf("Error: Unable to create virtual disk file.\n");
+    g_vfs_errno = E_VFS_IO;
+    printf("Error: %s\n", vfs_strerror(E_VFS_IO));
     exit(1);
   }
   char block[BLOCKSIZ];

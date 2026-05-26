@@ -11,9 +11,8 @@
 void install() {
   g_fd = fopen("filesystem", "r+b");
   if (!g_fd) {
-    printf(
-        "Error: Unable to open virtual disk file. Please run format() "
-        "first.\n");
+    g_vfs_errno = E_VFS_IO;
+    printf("Error: %s\n", vfs_strerror(E_VFS_IO));
     exit(1);
   }
 
