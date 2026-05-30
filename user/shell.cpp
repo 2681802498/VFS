@@ -87,6 +87,7 @@ void shell_loop()
             halt();
             break;
         } else {
+            g_vfs_errno = E_VFS_INVAL;
             std::cout << "Unknown command: " << cmd
                       << "\nType 'help' for available commands.\n";
         }

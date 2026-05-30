@@ -15,6 +15,7 @@ inline void reset_globals() {
     g_fd = nullptr;
     g_cur_path_inode = nullptr;
     g_user_id = -1;
+    g_vfs_errno = 0;
 }
 
 inline void fs_cleanup() {

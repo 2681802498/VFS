@@ -18,6 +18,7 @@ set(STORAGE_SOURCES
     kernel/bfree.cpp
     kernel/ialloc.cpp
     kernel/ifree.cpp
+    kernel/error.cpp
 )
 
 # Layer 3+5: Inode + 目录管理层 (成员B)
@@ -88,6 +89,7 @@ set(TEST_SOURCES
     test/test_balloc_bfree.cpp
     test/test_ifree.cpp
     test/test_login.cpp
+    test/test_error.cpp
 )
 
 add_executable(vfs_test ${VFS_LIB_SOURCES} ${TEST_SOURCES})
