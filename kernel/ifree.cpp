@@ -9,6 +9,8 @@ void ifree(unsigned int dinodeid) {
     g_filsys.s_ninode++;
     g_filsys.s_pinode++;
     g_filsys.s_inode[g_filsys.s_pinode] = dinodeid;
+  } else {
+    g_vfs_errno = E_VFS_NOSPC;
   }
   if(dinodeid < g_filsys.s_rinode) {
     g_filsys.s_rinode = dinodeid;

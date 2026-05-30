@@ -9,3 +9,4 @@ user_t g_user[USERNUM];
 FILE  *g_fd              = nullptr;
 inode *g_cur_path_inode  = nullptr;
 int32_t g_user_id        = -1;
+int     g_vfs_errno       = 0;

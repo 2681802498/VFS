@@ -24,7 +24,8 @@ inode* ialloc() {
       }
     }
     if (count == 0) {
-      printf("Error: No free inodes available.\n");
+      g_vfs_errno = E_VFS_NOSPC;
+      printf("Error: %s\n", vfs_strerror(E_VFS_NOSPC));
       return nullptr;
     }
     g_filsys.s_ninode = count;
@@ -38,7 +39,8 @@ inode* ialloc() {
 
   inode* ino = iget(dinode_id);
   if (!ino) {
-    printf("Error: Failed to read inode from disk.\n");
+    g_vfs_errno = E_VFS_IO;
+    printf("Error: %s\n", vfs_strerror(E_VFS_IO));
     return nullptr;
   }
 

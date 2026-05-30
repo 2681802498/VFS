@@ -10,7 +10,8 @@
 
 unsigned int balloc() {
   if (g_filsys.s_nfree == 0) {
-    printf("Error: No free disk blocks available.\n");
+    g_vfs_errno = E_VFS_NOSPC;
+    printf("Error: %s\n", vfs_strerror(E_VFS_NOSPC));
     return DISKFULL;
   }
 

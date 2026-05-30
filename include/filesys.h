@@ -54,6 +54,24 @@
 
 #define DISKFULL 65535  /* disk full sentinel */
 
+/* ====== Error Code Standardization ====== */
+enum vfs_error {
+    E_VFS_OK = 0,      /* success */
+    E_VFS_NOENT,       /* no such file or directory */
+    E_VFS_NOSPC,       /* no space left on device */
+    E_VFS_NOPERM,      /* permission denied */
+    E_VFS_EXIST,       /* file already exists */
+    E_VFS_NOTDIR,      /* not a directory */
+    E_VFS_ISDIR,       /* is a directory */
+    E_VFS_NFILE,       /* too many open files / table full */
+    E_VFS_IO,          /* I/O error */
+    E_VFS_AUTH,        /* authentication failure */
+    E_VFS_BUSY,        /* resource busy */
+    E_VFS_INVAL,       /* invalid argument */
+};
+
+const char *vfs_strerror(int err);
+
 /* ====== Disk Inode (32 bytes) ====== */
 struct dinode {
     uint16_t di_number;       /* link count */
@@ -146,6 +164,7 @@ extern user_t g_user[USERNUM];
 extern FILE  *g_fd;
 extern inode *g_cur_path_inode;
 extern int32_t g_user_id;
+extern int     g_vfs_errno;
 
 /* ====== Function Declarations ====== */
 

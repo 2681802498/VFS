@@ -19,12 +19,14 @@ void halt()
     if (g_fd) {
         if (fseek(g_fd, BLOCKSIZ, SEEK_SET) == 0) {
             if (fwrite(&g_filsys, sizeof(g_filsys), 1, g_fd) != 1) {
-                perror("write superblock");
+                g_vfs_errno = E_VFS_IO;
+                printf("Error: %s\n", vfs_strerror(E_VFS_IO));
             } else {
                 fflush(g_fd);
             }
         } else {
-            perror("fseek");
+            g_vfs_errno = E_VFS_IO;
+            printf("Error: %s\n", vfs_strerror(E_VFS_IO));
         }
 
         fclose(g_fd);
